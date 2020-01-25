@@ -1,0 +1,16 @@
+.monster-name-wrapper {
+    display: flex;
+    font-size: 30pt;
+    justify-content: center;
+}
+
+img {
+    align-self: center;
+    height: auto;
+    width: 80px;
+}
+
+.monster-name {
+    flex-basis: 0;
+    padding-left: 10px;
+}

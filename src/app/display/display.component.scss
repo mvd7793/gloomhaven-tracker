@@ -1,0 +1,21 @@
+main {
+    max-width: 100%;
+    padding: 0;
+    height: 100%;
+}
+
+.row {
+    justify-content: space-evenly;
+}
+
+.display-wrapper {
+    background: url(/assets/bg_map_trimmed.jpg) no-repeat top center fixed;;
+    background-size: cover;
+    height: 100%;
+    // TODO(mdierker): This only works on my Mac since background scales. Needs to be smarter.
+    padding: 200px 200px 0 10px;
+}
+
+.col {
+    max-width: 350px;
+}

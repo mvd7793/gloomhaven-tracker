@@ -9,16 +9,26 @@ import { environment } from '../environments/environment';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { PanelModule } from './panel/panel.module';
+import { DisplayComponent } from './display/display.component';
+import { MonsterCellComponent } from './display/monster-cell.component';
+import { MonsterNameComponent } from './display/monster-name.component';
 
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    DisplayComponent,
+    MonsterCellComponent,
+    MonsterNameComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+
+    // Custom modules
+    PanelModule,
 
     // UI Modules
     BsDropdownModule.forRoot(),
