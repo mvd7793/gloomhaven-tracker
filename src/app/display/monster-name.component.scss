@@ -1,5 +1,6 @@
 .monster-name-wrapper {
     display: flex;
+    font-family: 'Pirata One';
     font-size: 30pt;
     justify-content: center;
 }
@@ -12,5 +13,7 @@ img {
 
 .monster-name {
     flex-basis: 0;
+    align-self: center;
+    min-width: 200px;
     padding-left: 10px;
 }

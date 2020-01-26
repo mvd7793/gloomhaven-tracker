@@ -3,14 +3,18 @@
 }
 
 .monster-name {
-    font-weight: bold;
+    font-family: 'Nyala';
     font-size: 20pt;
 }
 
 .monster-health {
-    
+    font-family: 'Nyala';
     progressbar {
         font-size: 15pt;
         height: 30px;
     }
+}
+
+progressbar {
+    background-color: #e9e9e9;
 }
