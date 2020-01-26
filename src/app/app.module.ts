@@ -36,7 +36,9 @@ import { MonsterNameComponent } from './display/monster-name.component';
 
     // AngularFire
     AngularFireModule.initializeApp(environment.firebase),
-    AngularFirestoreModule,
+    AngularFirestoreModule.enablePersistence({
+      synchronizeTabs: true,
+    }),
   ],
   providers: [],
   bootstrap: [AppComponent]

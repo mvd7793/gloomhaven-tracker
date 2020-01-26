@@ -35,11 +35,11 @@ export interface BossData {
     /** Display name of the boss. */
     displayName: string;
 
-    /** Level --> stats for a boss. */
-    levelStats: {number: BossLevelStats};
+    /** Level --> stats r a boss. */
+    levelStats: {number: BossStats};
 }
 
-export interface BossLevelStats {
+export interface BossStats {
     /** Health is in the form "##xC", where C is average character level. */
     health: string;
     move: number;

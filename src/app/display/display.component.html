@@ -2,6 +2,9 @@
     <div class="display-wrapper">
         <div class="row">
             <div class="col">
+                <div *ngFor="let monster of allMonsters">
+                    {{monster.displayName}}
+                </div>
                 <monster-name></monster-name>
                 <monster-cell></monster-cell>
                 <monster-cell></monster-cell>
@@ -19,16 +22,6 @@
                 <monster-name></monster-name>
                 <monster-cell></monster-cell>
             </div>
-            <!-- <div class="col">
-                <monster-name></monster-name>
-                <monster-cell></monster-cell>
-            </div>
-            <div class="col">
-                <monster-name></monster-name>
-                <monster-cell></monster-cell>
-                <monster-cell></monster-cell>
-                <monster-cell></monster-cell>
-            </div> -->
         </div>
     </div>
 </main>
