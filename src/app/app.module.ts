@@ -13,6 +13,7 @@ import { PanelModule } from './panel/panel.module';
 import { DisplayComponent } from './display/display.component';
 import { MonsterCellComponent } from './display/monster-cell.component';
 import { MonsterNameComponent } from './display/monster-name.component';
+import { PartyManagerComponent } from './party-manager.component';
 
 
 @NgModule({
@@ -20,7 +21,8 @@ import { MonsterNameComponent } from './display/monster-name.component';
     AppComponent,
     DisplayComponent,
     MonsterCellComponent,
-    MonsterNameComponent
+    MonsterNameComponent,
+    PartyManagerComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,8 @@
+<main role="main" class="container">
+    <div class="monster-class" *ngFor="let monsterData of monsterClassList">
+        <div class="monster-name">{{monsterData.displayName}}</div>
+        <div class="monster-cell" *ngFor="let monster of monstersByClass.get(monsterData)">
+            <a>MINUS</a> #{{monster.getTokenId()}}: Health {{monster.getHealth()}} / {{monster.getMaxHealth()}} <a>PLUS</a>
+        </div>
+    </div>
+</main>

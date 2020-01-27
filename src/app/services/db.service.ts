@@ -5,19 +5,21 @@ import { map, first } from 'rxjs/operators';
 import { MonsterData, BossData, MonsterType, MonsterStats } from '../../types/monsters';
 import { MONSTERS_COLLECTION, BOSS_COLLECTION as BOSSES_COLLECTION, PARTY_COLLECTION as PARTIES_COLLECTION, DEFAULT_PARTY } from '../config/db';
 import { Party, ScenarioMonsterData } from '../../types/party';
+import { Monster } from '../db/monsters';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DbService {
-  private monsterMap: ReplaySubject<Map<String, MonsterData>> = new ReplaySubject(1);
+  private monsterDataMap: ReplaySubject<Map<String, MonsterData>> = new ReplaySubject(1);
+  private monsterIdMap: Map<number, Monster> = new Map();
 
   constructor(private af: AngularFirestore) {
     this.initMonsterMap();
   }
 
   getAllMonsters(): Observable<MonsterData[]> {
-    return this.monsterMap.pipe(map(monsterMap => Array.from(monsterMap.values())));
+    return this.monsterDataMap.pipe(map(monsterMap => Array.from(monsterMap.values())));
   }
 
   /**
@@ -28,14 +30,31 @@ export class DbService {
    * 
    * @param data from the current scenario
    */
-  getMonsterDataById(monsterId: string): Promise<MonsterData> {
-    return this.monsterMap.pipe(first(), map(monsterMap => {
+  getMonsterDataById(monsterId: string): Observable<MonsterData> {
+    return this.monsterDataMap.pipe(first(), map(monsterMap => {
       if (!monsterMap.has(monsterId)) {
         console.error('Invalid monster specified: ', monsterId);
         return null;
       }
       return monsterMap.get(monsterId);
-    })).toPromise();
+    }));
+  }
+
+  getPartyMonsters(): Observable<Monster[]> {
+    return this.getParty().pipe(map(party => {
+      for (const scenarioData of party.monsters) {
+        if (this.monsterIdMap.has(scenarioData.id)) {
+          this.monsterIdMap.get(scenarioData.id).onNewScenarioData(scenarioData);
+        } else {
+          // TODO(mdierker): Make this suck less!!
+          this.getMonsterDataById(scenarioData.monsterId).then(monsterData => {
+            const monster = new Monster(scenarioData, monsterData);
+            this.monsterIdMap.set(monsterData.id, monster);
+          });
+        }
+      }
+      return Array.from(this.monsterIdMap.values());
+    }));
   }
 
   getAllBosses(): Observable<BossData[]> {
@@ -143,7 +162,7 @@ export class DbService {
             return [monsterData.id, monsterData];
           })
         );
-        this.monsterMap.next(monsterMap);
+        this.monsterDataMap.next(monsterMap);
       });
   }
 }

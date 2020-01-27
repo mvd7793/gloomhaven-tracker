@@ -7,18 +7,20 @@ export class Monster {
     /** Serializable data specific to this instance of the monster. */
     private scenarioData: ScenarioMonsterData;
 
-    /** General data for this type of monster. */
-    private monsterData: MonsterData;
     /** Stats specific to this level of monster. */
     private monsterStats: MonsterStats;
 
-    constructor(scenarioData: ScenarioMonsterData, private db: DbService) {
-        this.scenarioData = scenarioData;
+    constructor(scenarioData: ScenarioMonsterData, private monsterData: MonsterData) {
+        this.monsterStats = this.monsterData.levelStats[scenarioData.level][scenarioData.type];
         this.onNewScenarioData(scenarioData);
     }
 
     getMonsterId() {
         return this.scenarioData.monsterId;
+    }
+
+    getTokenId() {
+        return this.scenarioData.tokenId;
     }
 
     getHealth() {
@@ -43,7 +45,7 @@ export class Monster {
     getDisplayName() {
         return this.monsterData.displayName;
     }
-    
+
     isDead(): boolean {
         return this.getHealth() <= 0;
     }
@@ -65,10 +67,6 @@ export class Monster {
     }
 
     async onNewScenarioData(data: ScenarioMonsterData) {
-        const monsterData = await this.db.getMonsterDataById(data.monsterId);
-
         this.scenarioData = data;
-        this.monsterData = monsterData;
-        this.monsterStats = monsterData.levelStats[data.level][data.type];
     }
 }
