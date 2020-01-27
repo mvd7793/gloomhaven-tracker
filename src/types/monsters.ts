@@ -9,7 +9,7 @@ export interface MonsterData {
     displayName: string;
 
     /** Level --> stats for a monster. */
-    levelStats: {number: MonsterLevelStats};
+    levelStats: {[level: number]: MonsterLevelStats};
 }
 
 /**
@@ -26,6 +26,14 @@ export interface MonsterStats {
     attack: number;
     range: number;
     attributes: string[];
+}
+
+/**
+ * Enum tracking the valid options for MonsterLevelStats.
+ */
+export enum MonsterType {
+    NORMAL = "normal",
+    ELITE = "elite",
 }
 
 export interface BossData {
@@ -50,5 +58,4 @@ export interface BossStats {
     special2: string[];
     immunities: string[];
     notes: '';
-
 }

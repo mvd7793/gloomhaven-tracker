@@ -1,3 +1,5 @@
+import { MonsterType } from './monsters';
+
 export interface Party {
     averageCharacterLevel: number;
     monsters: ScenarioMonsterData[]
@@ -15,7 +17,7 @@ export interface ScenarioMonsterData {
     level: number;
 
     /** Type of the monster, either "normal" or "elite". */
-    type: string;
+    type: MonsterType;
 
     /** Current health. If missing, uses monster default from the DB. */
     health?: number;

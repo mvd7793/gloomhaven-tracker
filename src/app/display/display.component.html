@@ -1,28 +1,16 @@
 <main role="main" class="container">
     <div class="display-wrapper">
-        <div class="row">
-            <div class="col">
-                <div *ngFor="let monster of allMonsters">
-                    {{monster.displayName}}
+        <div class="name-content">
+            Amen ChurchOfJesus
+        </div>
+        <div class="display-content">
+            <div class="row">
+                <div class="col" *ngFor="let monsterData of monsterClassList">
+                    <monster-name [monsterData]="monsterData"></monster-name>
+                    <monster-cell *ngFor="let monster of monstersByClass.get(monsterData)" [monster]="monster">
+                    </monster-cell>
                 </div>
-                <monster-name></monster-name>
-                <monster-cell></monster-cell>
-                <monster-cell></monster-cell>
-                <monster-cell></monster-cell>
-                <monster-cell></monster-cell>
-                <monster-cell></monster-cell>
-            </div>
-            <div class="col">
-                <monster-name></monster-name>
-                <monster-cell></monster-cell>
-                <monster-cell></monster-cell>
-                <monster-cell></monster-cell>
-            </div>
-            <div class="col">
-                <monster-name></monster-name>
-                <monster-cell></monster-cell>
             </div>
         </div>
     </div>
 </main>
-  

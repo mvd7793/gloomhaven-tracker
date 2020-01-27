@@ -1,8 +1,12 @@
-<div class="monster-cell-wrapper">
+<div class="monster-cell-wrapper" [class.elite]="monster.getType() == 'elite'">
     <div class="monster-name">
-        Guard 1
+        <div class="monster-number">
+            <span>{{monster.scenarioData.id}}</span>
+        </div>
     </div>
     <div class="monster-health">
-        <progressbar [value]="5" [max]="6" type="danger">5 / 6</progressbar>
+        <progressbar [value]="monster.getHealth()" [max]="monster.getMaxHealth()" type="danger">
+            {{monster.getHealth()}} / {{monster.getMaxHealth()}}
+        </progressbar>
     </div>
 </div>

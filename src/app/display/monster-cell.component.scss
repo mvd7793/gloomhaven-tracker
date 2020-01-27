@@ -1,5 +1,31 @@
 .monster-cell-wrapper {
-    padding: 8px 0;
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 10px 4px 4px;
+}
+
+.monster-number {
+    background-image: url('/assets/thorns_badge.png');
+    background-repeat: no-repeat;
+    background-position: center center;
+
+    // TODO(mdierker): Figure out why these are different.
+    background-size: 64px;
+    height: 70px;
+
+    display: flex;
+    justify-content: center;
+    span {
+        align-self: center;
+    }
+
+    margin-right: 5px;
+
+    font-size: 50pt;
+    font-weight: bold;
+    text-align: center;
+    color: white;
+    width: 70px;
 }
 
 .monster-name {
@@ -8,6 +34,8 @@
 }
 
 .monster-health {
+    align-self: center;
+    flex-grow: 1;
     font-family: 'Nyala';
     progressbar {
         font-size: 15pt;
@@ -17,4 +45,12 @@
 
 progressbar {
     background-color: #e9e9e9;
+}
+
+.monster-cell-wrapper.elite {
+    background-color: rgba(150, 150, 0, 0.5);
+    border-radius: 8px;
+    .monster-number {
+        color: gold;
+    }
 }
