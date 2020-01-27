@@ -1,12 +1,15 @@
-<div class="monster-cell-wrapper" [class.elite]="monster.getType() == 'elite'">
+<div class="monster-cell-wrapper" [class.elite]="monster.getType() == 'elite'" [class.dead]="monster.isDead()">
     <div class="monster-name">
         <div class="monster-number">
             <span>{{monster.scenarioData.id}}</span>
         </div>
     </div>
     <div class="monster-health">
-        <progressbar [value]="monster.getHealth()" [max]="monster.getMaxHealth()" type="danger">
+        <progressbar [value]="monster.getHealth()" [max]="monster.getMaxHealth()" type="danger" *ngIf="!monster.isDead()">
             {{monster.getHealth()}} / {{monster.getMaxHealth()}}
         </progressbar>
+    </div>
+    <div class="monster-status" *ngIf="monster.isDead()">
+        Defeated!
     </div>
 </div>

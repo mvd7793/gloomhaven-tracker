@@ -10,6 +10,9 @@ export interface ScenarioMonsterData {
     /** Local ID of this monster, unique for both bosses and monsters within the current scenario. */
     id: number;
 
+    /** ID number of the physical token used to represent the monster. */
+    tokenId: number;
+
     /** Type of monster, matching a monsterId from the monster DB. */
     monsterId: string;
 

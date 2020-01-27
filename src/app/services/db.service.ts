@@ -48,12 +48,14 @@ export class DbService {
     //   monsters: [
     //     {
     //       id: 0,
+    //       tokenId: 0,
     //       monsterId: "bandit_guard",
     //       level: 1,
     //       type: MonsterType.NORMAL
     //     },
     //     {
     //       id: 1,
+    //       tokenId: 4,
     //       monsterId: "bandit_guard",
     //       level: 1,
     //       type: MonsterType.NORMAL,
@@ -61,6 +63,7 @@ export class DbService {
     //     },
     //     {
     //       id: 3,
+    //       tokenId: 2,
     //       monsterId: "bandit_guard",
     //       level: 1,
     //       type: MonsterType.ELITE,
@@ -68,16 +71,55 @@ export class DbService {
     //     },
     //     {
     //       id: 2,
+    //       tokenId: 1,
     //       monsterId: "living_bones",
     //       level: 1,
     //       type: MonsterType.NORMAL
     //     },
     //     {
     //       id: 4,
+    //       tokenId: 2,
     //       monsterId: "living_bones",
     //       level: 1,
     //       type: MonsterType.NORMAL
-    //     }
+    //     },
+    //     {
+    //       id: 5,
+    //       tokenId: 0,
+    //       monsterId: "bandit_archer",
+    //       level: 1,
+    //       type: MonsterType.NORMAL
+    //     },
+    //     {
+    //       id: 6,
+    //       tokenId: 0,
+    //       monsterId: "bandit_archer",
+    //       level: 1,
+    //       type: MonsterType.ELITE
+    //     },
+    //     {
+    //       id: 7,
+    //       tokenId: 0,
+    //       monsterId: "bandit_archer",
+    //       level: 1,
+    //       health: 3,
+    //       type: MonsterType.NORMAL
+    //     },
+    //     {
+    //       id: 8,
+    //       tokenId: 0,
+    //       monsterId: "bandit_archer",
+    //       level: 1,
+    //       health: 0,
+    //       type: MonsterType.NORMAL
+    //     },
+    //     {
+    //       id: 9,
+    //       tokenId: 0,
+    //       monsterId: "bandit_archer",
+    //       level: 1,
+    //       type: MonsterType.NORMAL
+    //     },
     //   ],
     //   bosses: []
     // };

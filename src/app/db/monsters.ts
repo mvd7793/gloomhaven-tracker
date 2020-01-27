@@ -43,6 +43,21 @@ export class Monster {
     getDisplayName() {
         return this.monsterData.displayName;
     }
+    
+    isDead(): boolean {
+        return this.getHealth() <= 0;
+    }
+
+    compareTo(other: Monster) {
+        if (this.isDead() !== other.isDead()) {
+            return this.isDead() ? 1 : -1;
+        }
+        if (this.scenarioData.type !== other.scenarioData.type) {
+            return this.scenarioData.type.localeCompare(other.scenarioData.type);
+        }
+        return this.scenarioData.tokenId - other.scenarioData.tokenId;
+
+    }
 
     // TODO(mdierker): Use this.
     saveData(): ScenarioMonsterData {
