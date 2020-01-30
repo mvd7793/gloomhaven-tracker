@@ -2,7 +2,30 @@
     <div class="monster-class" *ngFor="let monsterData of monsterClassList">
         <div class="monster-name">{{monsterData.displayName}}</div>
         <div class="monster-cell" *ngFor="let monster of monstersByClass.get(monsterData)">
-            <a>MINUS</a> #{{monster.getTokenId()}}: Health {{monster.getHealth()}} / {{monster.getMaxHealth()}} <a>PLUS</a>
+            <a [routerLink]="" (click)="changeHealth(monster, -1)">MINUS</a> #{{monster.getTokenId()}}: Health {{monster.getHealth()}} / {{monster.getMaxHealth()}}
+            <a [routerLink]="" (click)="changeHealth(monster, 1)">PLUS</a>
         </div>
+    </div>
+    <div class="create-monsters">
+        <p><strong>Add new monsters</strong></p>
+        <form #createForm="ngForm" (ngSubmit)="createMonsters()" autocomplete="off">
+            <input [(ngModel)]="createMonsterData.selectedMonster" (typeaheadOnSelect)="onCreateMonsterSelected($event)"
+                [typeahead]="allMonsterData" [typeaheadAsync]="true" typeaheadOptionField="displayName"
+                placeholder="Select a monster" name="monsterId" class="form-control" required>
+            <input [(ngModel)]="createMonsterData.numMonsters" type="number" name="numMonsters"
+                placeholder="How many monsters" class="form-control" required>
+            <input [(ngModel)]="createMonsterData.level" type="number" name="level" placeholder="Level"
+                class="form-control" required>
+            <div class="form-check">
+                <input type="checkbox" [(ngModel)]="createMonsterData.elite" name="elite" class="form-check-input"
+                    id="createMonsterElite">
+                <label class="form-check-label" for="createMonsterElite">Elite</label>
+            </div>
+
+            <button type="submit" [disabled]="!createForm.form.valid">Create Monsters</button>
+        </form>
+    </div>
+    <div class="game-controls">
+        <a href="#" (click)="deleteAllMonsters()">Delete all monsters</a>
     </div>
 </main>

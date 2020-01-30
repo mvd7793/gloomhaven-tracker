@@ -1,7 +1,5 @@
 import { ScenarioMonsterData } from '../../types/party';
-import { DbService } from '../services/db.service';
 import { MonsterStats, MonsterData, MonsterType } from '../../types/monsters';
-import { Observable } from 'rxjs';
 
 export class Monster {
     /** Serializable data specific to this instance of the monster. */
@@ -21,6 +19,10 @@ export class Monster {
 
     getTokenId() {
         return this.scenarioData.tokenId;
+    }
+
+    getScenarioId() {
+        return this.scenarioData.id;
     }
 
     getHealth() {
@@ -46,6 +48,13 @@ export class Monster {
         return this.monsterData.displayName;
     }
 
+    /**
+     * Returns the generic data about this type of monster.
+     */
+    getGenericMonsterData() {
+        return this.monsterData;
+    }
+
     isDead(): boolean {
         return this.getHealth() <= 0;
     }
@@ -61,8 +70,14 @@ export class Monster {
 
     }
 
-    // TODO(mdierker): Use this.
-    saveData(): ScenarioMonsterData {
+    setHealth(health: number) {
+        this.scenarioData.health = health;
+    }
+
+    /**
+     * Returns the data that should be persisted to Firebase for this monster.
+     */
+    getSaveData(): ScenarioMonsterData {
         return this.scenarioData;
     }
 

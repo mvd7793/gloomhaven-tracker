@@ -8,7 +8,7 @@ export interface Party {
 
 export interface ScenarioMonsterData {
     /** Local ID of this monster, unique for both bosses and monsters within the current scenario. */
-    id: number;
+    id: string;
 
     /** ID number of the physical token used to represent the monster. */
     tokenId: number;

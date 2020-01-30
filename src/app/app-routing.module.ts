@@ -10,9 +10,9 @@ const routes: Routes = [
     component: DisplayComponent,
   },
   {
-    path: 'party',
+    path: '',
     component: PartyManagerComponent,
-  }
+  },
 ];
 
 @NgModule({

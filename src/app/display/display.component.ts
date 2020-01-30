@@ -50,9 +50,8 @@ export class DisplayComponent implements OnInit {
 
     const monstersByClass: Map<MonsterData, Monster[]> = new Map();
     for (const [monsterId, monsters] of monstersByClassId.entries()) {
-      const monsterData = this.db.getMonsterDataById(monsterId);
       const sortedMonsters = monsters.sort((m1, m2) => m1.compareTo(m2));
-      monstersByClass.set(monsterData, sortedMonsters);
+      monstersByClass.set(monsters[0].getGenericMonsterData(), sortedMonsters);
     }
     this.monstersByClass = monstersByClass;
     this.monsterClassList = Array.from(this.monstersByClass.keys());
