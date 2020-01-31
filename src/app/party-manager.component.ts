@@ -73,8 +73,8 @@ export class PartyManagerComponent implements OnInit {
     const usedNumbers = new Set(this.partyMonsters
       .filter(monster => monster.getMonsterId() == monsterId)
       .map(monster => monster.getTokenId()));
-    // Return the next available number starting from 0 since tokens begin at 0.
-    let maxUnusedNum = 0;
+    // Return the next available number starting from 1 since tokens begin at 1.
+    let maxUnusedNum = 1;
     while (usedNumbers.has(maxUnusedNum)) {
       maxUnusedNum++;
     }
