@@ -1,7 +1,7 @@
 <div class="monster-cell-wrapper" [class.elite]="monster.getType() == 'elite'" [class.dead]="monster.isDead()">
     <div class="monster-name">
         <div class="monster-number">
-            <span>{{monster.scenarioData.tokenId}}</span>
+            <span>{{monster.getTokenId()}}</span>
         </div>
     </div>
     <div class="monster-health">

@@ -104,6 +104,7 @@ export class PartyManagerComponent implements OnInit {
 
 interface CreateMonsterData {
   monsterId: string;
+  monsterName: string;
   numMonsters: number;
   level: number;
   elite: boolean;

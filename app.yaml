@@ -1,0 +1,54 @@
+runtime: python27
+threadsafe: yes
+api_version: 1
+default_expiration: "1m"
+
+
+handlers:
+  - url: /((party|display)(/.*)?)?
+    static_files: dist/gloomhaven-tracker/index.html
+    upload: dist/gloomhaven-tracker/index.html
+    secure: always
+
+  - url: /assets/(.+)
+    static_files: dist/gloomhaven-tracker/assets/\1
+    upload: dist/gloomhaven-tracker/assets/(.*)
+    secure: always
+    
+  - url: /(.+)
+    static_files: dist/gloomhaven-tracker/\1
+    upload: dist/gloomhaven-tracker/(.*)
+    secure: always
+
+skip_files:
+  # Top level folders
+  - ^\.idea$
+  - ^\.vscode$
+  - ^e2e/$
+  - ^node_modules$
+  - ^scripts$
+  - ^src/$
+
+  # Top level files
+  - ^angular\.json
+  - ^app\.yaml
+  - ^browserslist
+  - ^LICENSE
+  - ^karma\.config\.js
+  - ^package\.json
+  - ^package-lock\.json
+  - ^protractor\.conf\.js
+  - ^README\.md$
+  - ^tsconfig.*\.json
+  - ^tslint\.json
+  - ^yarn\.lock
+
+  # Default skip_files list.
+  - ^(.*/)?#.*#$
+  - ^(.*/)?.*~$
+#  - ^(.*/)?.*\.py[co]$
+  - ^(.*/)?.*/RCS/.*$
+  - ^(.*/)?\..*$
+
+
+
