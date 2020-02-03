@@ -2,7 +2,8 @@
     <div class="monster-class" *ngFor="let monsterData of monsterClassList">
         <div class="monster-name">{{monsterData.displayName}}</div>
         <div class="monster-cell" *ngFor="let monster of monstersByClass.get(monsterData)">
-            <a [routerLink]="" (click)="changeHealth(monster, -1)">MINUS</a> #{{monster.getTokenId()}}: Health {{monster.getHealth()}} / {{monster.getMaxHealth()}}
+            <a [routerLink]="" (click)="changeHealth(monster, -1)">MINUS</a> #{{monster.getTokenId()}}: Health
+            {{monster.getHealth()}} / {{monster.getMaxHealth()}}
             <a [routerLink]="" (click)="changeHealth(monster, 1)">PLUS</a>
         </div>
     </div>
@@ -27,5 +28,8 @@
     </div>
     <div class="game-controls">
         <a href="#" (click)="deleteAllMonsters()">Delete all monsters</a>
+    </div>
+    <div class="cast-wrapper">
+        <google-cast-launcher></google-cast-launcher>
     </div>
 </main>

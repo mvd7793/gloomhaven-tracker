@@ -30,6 +30,8 @@ export class PartyManagerComponent implements OnInit {
     this.partyMonsters$ = this.db.getPartyMonsters();
     this.partyMonsters$.subscribe(partyMonsters => this.onPartyMonstersUpdate(partyMonsters));
     this.allMonsterData = this.db.getAllMonsters();
+
+    this.initializeChromecast();
   }
 
   createMonsters() {
@@ -99,6 +101,19 @@ export class PartyManagerComponent implements OnInit {
     }
     this.monstersByClass = monstersByClass;
     this.monsterClassList = Array.from(this.monstersByClass.keys());
+  }
+
+  private initializeChromecast() {
+    window['__onGCastApiAvailable'] = function(isAvailable) {
+      if (isAvailable) {
+        // @ts-ignore
+        cast.framework.CastContext.getInstance().setOptions({
+          receiverApplicationId: '948CAC63',
+          // @ts-ignore
+          autoJoinPolicy: chrome.cast.AutoJoinPolicy.ORIGIN_SCOPED
+        });
+      }
+    };
   }
 }
 

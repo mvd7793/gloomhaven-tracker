@@ -9,7 +9,6 @@ export class Monster {
     private monsterStats: MonsterStats;
 
     constructor(scenarioData: ScenarioMonsterData, private monsterData: MonsterData) {
-        this.monsterStats = this.monsterData.levelStats[scenarioData.level][scenarioData.type];
         this.onNewScenarioData(scenarioData);
     }
 
@@ -83,5 +82,6 @@ export class Monster {
 
     async onNewScenarioData(data: ScenarioMonsterData) {
         this.scenarioData = data;
+        this.monsterStats = this.monsterData.levelStats[data.level][data.type];
     }
 }
