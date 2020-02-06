@@ -39,4 +39,7 @@ export interface ScenarioBossData {
 
     /** Current health. If missing, uses boss default from the DB. */
     health?: number;
+
+    /** Array of active status IDs. */
+    statuses: string[];
 }
