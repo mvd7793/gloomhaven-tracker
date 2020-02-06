@@ -1,0 +1,14 @@
+<div class="monster-cell">
+    <div>
+        <a [routerLink]="" (click)="changeHealth(-1)">MINUS</a> #{{monster.getTokenId()}}
+        <span (click)="toggleStatusesVisible()">: Health {{monster.getHealth()}} /
+            {{monster.getMaxHealth()}}</span>&nbsp;
+        <a [routerLink]="" (click)="changeHealth(1)">PLUS</a>
+    </div>
+    <div class="monster-statuses" *ngIf="statusesVisible">
+        <span class="monster-status" *ngFor="let status of allStatuses" [class.active]="monster.hasStatus(status)"
+            (click)="toggleStatus(status)">
+            <img class="monster-status-icon" src="{{status.getImgPath()}}">
+        </span>
+    </div>
+</div>

@@ -4,12 +4,18 @@
             <span>{{monster.getTokenId()}}</span>
         </div>
     </div>
-    <div class="monster-health">
-        <progressbar [value]="monster.getHealth()" [max]="monster.getMaxHealth()" type="danger" *ngIf="!monster.isDead()">
-            {{monster.getHealth()}} / {{monster.getMaxHealth()}}
-        </progressbar>
+    <div class="monster-info" *ngIf="!monster.isDead()">
+        <div class="monster-health">
+            <progressbar [value]="monster.getHealth()" [max]="monster.getMaxHealth()" type="danger">
+                {{monster.getHealth()}} / {{monster.getMaxHealth()}}
+            </progressbar>
+        </div>
+        <div class="monster-status" *ngFor="let status of monster.getStatuses()">
+            <img src="{{status.getImgPath()}}" class="monster-status-icon">
+            <span class="monster-status-text">{{status.displayName}}</span>
+        </div>
     </div>
-    <div class="monster-status" *ngIf="monster.isDead()">
+    <div class="monster-info" *ngIf="monster.isDead()">
         Defeated!
     </div>
 </div>

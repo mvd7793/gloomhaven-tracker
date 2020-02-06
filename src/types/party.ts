@@ -24,6 +24,9 @@ export interface ScenarioMonsterData {
 
     /** Current health. If missing, uses monster default from the DB. */
     health?: number;
+
+    /** Array of active status IDs. */
+    statuses: string[];
 }
 
 export interface ScenarioBossData {

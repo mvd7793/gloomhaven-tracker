@@ -1,5 +1,6 @@
 import { ScenarioMonsterData } from '../../types/party';
 import { MonsterStats, MonsterData, MonsterType } from '../../types/monsters';
+import { StatusEffect } from '../../types/status';
 
 export class Monster {
     /** Serializable data specific to this instance of the monster. */
@@ -45,6 +46,23 @@ export class Monster {
 
     getDisplayName() {
         return this.monsterData.displayName;
+    }
+
+    getStatuses(): StatusEffect[] {
+        return this.scenarioData.statuses
+            .map(statusId => StatusEffect.getEffectById(statusId));
+    }
+
+    hasStatus(status: StatusEffect): boolean {
+        return this.scenarioData.statuses.includes(status.id);
+    }
+
+    setStatus(status: StatusEffect, active: boolean) {
+        if (active && !this.scenarioData.statuses.includes(status.id)) {
+            this.scenarioData.statuses.push(status.id);
+        } else if (!active && this.scenarioData.statuses.includes(status.id)) {
+            this.scenarioData.statuses.splice(this.scenarioData.statuses.indexOf(status.id), 1);
+        }
     }
 
     /**

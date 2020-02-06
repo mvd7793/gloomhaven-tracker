@@ -16,6 +16,7 @@ import { MonsterNameComponent } from './display/monster-name.component';
 import { PartyManagerComponent } from './party-manager.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { PartyMonsterCellComponent } from './party/party-monster-cell.component';
 
 
 @NgModule({
@@ -25,6 +26,7 @@ import { CommonModule } from '@angular/common';
     MonsterCellComponent,
     MonsterNameComponent,
     PartyManagerComponent,
+    PartyMonsterCellComponent,
   ],
   imports: [
     BrowserAnimationsModule,

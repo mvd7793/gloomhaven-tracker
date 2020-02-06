@@ -6,6 +6,7 @@ import { MonsterData, MonsterType } from '../types/monsters';
 import { max } from 'rxjs/operators';
 import { ScenarioMonsterData } from '../types/party';
 import { TypeaheadMatch } from 'ngx-bootstrap/typeahead/public_api';
+import { StatusEffect } from '../types/status';
 
 @Component({
   selector: 'party-manager',
@@ -44,6 +45,7 @@ export class PartyManagerComponent implements OnInit {
         monsterId: this.createMonsterData.monsterId,
         level: this.createMonsterData.level,
         type: this.createMonsterData.elite ? MonsterType.ELITE : MonsterType.NORMAL,
+        statuses: [],
       };
       newMonsters.push(scenarioData);
     }
@@ -61,11 +63,6 @@ export class PartyManagerComponent implements OnInit {
         this.db.deletePartyMonsters();
       }
     }
-  }
-
-  changeHealth(monster: Monster, amount: number) {
-    monster.setHealth(monster.getHealth() + amount);
-    this.db.saveMonster(monster);
   }
 
   /**

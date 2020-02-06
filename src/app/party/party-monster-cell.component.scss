@@ -1,0 +1,21 @@
+.monster-cell {
+    font-size: 18pt;
+    padding: 20px 0;
+}
+
+.monster-statuses {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.monster-status {
+    margin: 8px;
+
+    .monster-status-icon {
+        width: 32px;
+    }
+
+    &:not(.active) .monster-status-icon {
+        opacity: 0.5;
+    }
+}

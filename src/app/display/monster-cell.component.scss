@@ -1,69 +1,81 @@
 .monster-cell-wrapper {
-    border-radius: 16px;
-    display: flex;
-    justify-content: space-between;
-    padding: 4px 10px 4px 4px;
+  border-radius: 16px;
+  display: flex;
+  justify-content: space-between;
+  padding: 2px 10px 4px 2px;
+  margin: 4px 0;
 }
 
 .monster-number {
-    background-image: url('/assets/thorns_badge.png');
-    background-repeat: no-repeat;
-    background-position: center center;
+  background-image: url("/assets/thorns_badge.png");
+  background-repeat: no-repeat;
+  background-position: center center;
 
-    // TODO(mdierker): Figure out why these are different.
-    background-size: 64px;
-    height: 70px;
+  // TODO(mdierker): Figure out why these are different.
+  background-size: 64px;
+  height: 70px;
 
-    display: flex;
-    justify-content: center;
-    span {
-        align-self: center;
-    }
+  display: flex;
+  justify-content: center;
+  span {
+    align-self: center;
+  }
 
-    margin-right: 5px;
+  margin-right: 5px;
 
-    font-size: 50pt;
-    font-weight: bold;
-    text-align: center;
-    color: white;
-    width: 70px;
+  font-size: 50pt;
+  font-weight: bold;
+  text-align: center;
+  color: white;
+  width: 70px;
 }
 
 .monster-name {
-    font-family: 'Nyala';
-    font-size: 20pt;
+  font-family: "Nyala";
+  font-size: 20pt;
+}
+
+.monster-info {
+  align-self: center;
+  flex-grow: 1;
+  font-family: "Nyala";
 }
 
 .monster-health {
-    align-self: center;
-    flex-grow: 1;
-    font-family: 'Nyala';
-    progressbar {
-        font-size: 15pt;
-        height: 30px;
-    }
+  progressbar {
+    font-size: 15pt;
+    height: 30px;
+  }
 }
 
 .monster-status {
-    align-self: center;
-    flex-grow: 1;
-    font-family: 'Nyala';
+    display: flex;
+    margin-top: 3px;
+}
+
+.monster-status-icon {
+    width: 24px;
+}
+
+.monster-status-text {
+    align-self:center;
+    margin-left: 5px;
 }
 
 progressbar {
-    background-color: #e9e9e9;
+  background-color: #e9e9e9;
 }
 
 .monster-cell-wrapper.elite {
-    background-color: rgba(150, 150, 0, 0.5);
-    .monster-number {
-        color: gold;
-    }
+  background-color: rgba(150, 150, 0, 0.5);
+  .monster-number {
+    color: gold;
+  }
 }
 
-.monster-cell-wrapper.dead { 
-    background-color: rgba(100, 100, 100, 0.5);
-    font-size: 30pt;
-    opacity: 0.5;
-    margin: 8px;
+.monster-cell-wrapper.dead {
+  background-color: rgba(100, 100, 100, 0.5);
+  font-size: 30pt;
+  opacity: 0.5;
+  margin: 8px;
 }
