@@ -1,7 +1,17 @@
 <main role="main" class="container">
     <div class="monster-class" *ngFor="let monsterData of monsterClassList">
         <div class="monster-name">{{monsterData.displayName}}</div>
-        <party-monster-cell [monster]="monster" *ngFor="let monster of monstersByClass.get(monsterData)"></party-monster-cell>
+        <ng-container *ngFor="let monster of monstersByClass.get(monsterData)">
+            <party-monster-cell [monster]="monster" *ngIf="!monster.isDead()"></party-monster-cell>
+        </ng-container>
+    </div>
+    <hr>
+    <h1>Dead Monsters</h1>
+    <div class="monster-class" *ngFor="let monsterData of monsterClassList">
+        <div class="monster-name">{{monsterData.displayName}}</div>
+        <ng-container *ngFor="let monster of monstersByClass.get(monsterData)">
+            <party-monster-cell [monster]="monster" *ngIf="monster.isDead()"></party-monster-cell>
+        </ng-container>
     </div>
     <div class="create-monsters">
         <p><strong>Add new monsters</strong></p>

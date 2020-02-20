@@ -38,6 +38,7 @@ export class PartyMonsterCellComponent implements OnInit {
       this.monster.setStatus(status, true);
     }
     this.db.saveMonster(this.monster);
+    this.statusesVisible = false;
   }
 
 }
