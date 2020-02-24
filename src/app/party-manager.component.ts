@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DbService } from './services/db.service';
 import { Observable } from 'rxjs';
-import { Monster } from './db/monsters';
+import { Monster } from './db/monster';
 import { MonsterData, MonsterType } from '../types/monsters';
 import { max } from 'rxjs/operators';
 import { ScenarioMonsterData, Party } from '../types/party';
@@ -42,12 +42,12 @@ export class PartyManagerComponent implements OnInit {
 
   createMonsters() {
     const newMonsters = [];
-    let tokenId = this.getNextTokenId(this.createMonsterData.monsterId);
+    let tokenId = this.getNextTokenId(this.createMonsterData.monsterClass);
     for (let i = 0; i < this.createMonsterData.numMonsters; i++) {
       const scenarioData: ScenarioMonsterData = {
         id: '', // Generated in the service
         tokenId: tokenId++,
-        monsterId: this.createMonsterData.monsterId,
+        monsterClass: this.createMonsterData.monsterClass,
         level: this.createMonsterData.level,
         type: this.createMonsterData.elite ? MonsterType.ELITE : MonsterType.NORMAL,
         statuses: [],
@@ -61,7 +61,7 @@ export class PartyManagerComponent implements OnInit {
   }
 
   onCreateMonsterSelected(evt: TypeaheadMatch) {
-    this.createMonsterData.monsterId = evt.item.id;
+    this.createMonsterData.monsterClass = evt.item.id;
   }
 
   deleteAllMonsters() {
@@ -75,9 +75,9 @@ export class PartyManagerComponent implements OnInit {
   /**
    * Returns the next unused token for the given monster type.
    */
-  private getNextTokenId(monsterId: string): number {
+  private getNextTokenId(monsterClass: string): number {
     const usedNumbers = new Set(this.partyMonsters
-      .filter(monster => monster.getMonsterId() === monsterId)
+      .filter(monster => monster.getClassId() === monsterClass)
       .map(monster => monster.getTokenId()));
     // Return the next available number starting from 1 since tokens begin at 1.
     let maxUnusedNum = 1;
@@ -91,15 +91,15 @@ export class PartyManagerComponent implements OnInit {
     this.partyMonsters = partyMonsters;
     const monstersByClassId: Map<string, Monster[]> = new Map();
     for (const monster of partyMonsters) {
-      if (monstersByClassId.has(monster.getMonsterId())) {
-        monstersByClassId.get(monster.getMonsterId()).push(monster);
+      if (monstersByClassId.has(monster.getClassId())) {
+        monstersByClassId.get(monster.getClassId()).push(monster);
       } else {
-        monstersByClassId.set(monster.getMonsterId(), [monster]);
+        monstersByClassId.set(monster.getClassId(), [monster]);
       }
     }
 
     const monstersByClass: Map<MonsterData, Monster[]> = new Map();
-    for (const [monsterId, monsters] of monstersByClassId.entries()) {
+    for (const [monsterClass, monsters] of monstersByClassId.entries()) {
       const sortedMonsters = monsters.sort((m1, m2) => m1.getTokenId() - m2.getTokenId());
       monstersByClass.set(monsters[0].getGenericMonsterData(), sortedMonsters);
     }
@@ -121,7 +121,7 @@ export class PartyManagerComponent implements OnInit {
 }
 
 interface CreateMonsterData {
-  monsterId: string;
+  monsterClass: string;
   monsterName: string;
   numMonsters: number;
   level: number;

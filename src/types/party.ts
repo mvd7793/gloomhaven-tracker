@@ -4,24 +4,13 @@ export interface Party {
     averageCharacterLevel: number;
     monsters: ScenarioMonsterData[];
     bosses: ScenarioBossData[];
+    numCharacters: number;
     scenarioLevel: number;
 }
 
-export interface ScenarioMonsterData {
+export interface ScenarioEnemyData {
     /** Local ID of this monster, unique for both bosses and monsters within the current scenario. */
     id: string;
-
-    /** ID number of the physical token used to represent the monster. */
-    tokenId: number;
-
-    /** Type of monster, matching a monsterId from the monster DB. */
-    monsterId: string;
-
-    /** Level of the monster. */
-    level: number;
-
-    /** Type of the monster, either "normal" or "elite". */
-    type: MonsterType;
 
     /** Current health. If missing, uses monster default from the DB. */
     health?: number;
@@ -30,16 +19,21 @@ export interface ScenarioMonsterData {
     statuses: string[];
 }
 
-export interface ScenarioBossData {
-    /** Local ID of this boss, unique for both bosses and monsters within the current scenario. */
-    id: number;
+export interface ScenarioMonsterData extends ScenarioEnemyData {
+    /** ID number of the physical token used to represent the monster. */
+    tokenId: number;
 
-    /** Type of boss, matching a bossId from the boss DB. */
-    monsterId: string;
+    /** Type of monster, matching a monsterClass from the monster DB. */
+    monsterClass: string;
 
-    /** Current health. If missing, uses boss default from the DB. */
-    health?: number;
+    /** Level of the monster. */
+    level: number;
 
-    /** Array of active status IDs. */
-    statuses: string[];
+    /** Type of the monster, either "normal" or "elite". */
+    type: MonsterType;
+}
+
+export interface ScenarioBossData extends ScenarioEnemyData {
+    /** Type of boss, matching a bossClass from the boss DB. */
+    bossClass: string;
 }

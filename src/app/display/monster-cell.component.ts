@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Monster } from '../db/monsters';
+import { Monster } from '../db/monster';
 
 @Component({
   selector: 'monster-cell',

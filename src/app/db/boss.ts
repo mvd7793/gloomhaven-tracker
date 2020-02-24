@@ -1,24 +1,23 @@
-import { ScenarioMonsterData, ScenarioBossData } from '../../types/party';
+import { ScenarioMonsterData, ScenarioBossData, Party } from '../../types/party';
 import { MonsterStats, MonsterData, MonsterType, BossStats } from '../../types/monsters';
 import { StatusEffect } from '../../types/status';
+import { Enemy } from './enemy';
 
-export class Boss {
+const BOSS_HEALTH_CHARACTER_REGEX = /(\d+)xC/;
+
+export class Boss implements Enemy {
     /** Serializable data specific to this instance of the boss. */
     private scenarioData: ScenarioBossData;
 
     /** Stats specific to this type of boss. */
     private bossStats: BossStats;
 
-    constructor(scenarioData: ScenarioMonsterData, private monsterData: MonsterData) {
+    constructor(scenarioData: ScenarioMonsterData, private monsterData: MonsterData, private party: Party) {
         this.onNewScenarioData(scenarioData);
     }
 
-    getMonsterId() {
-        return this.scenarioData.monsterId;
-    }
-
-    getTokenId() {
-        return this.scenarioData.tokenId;
+    getClassId() {
+        return this.scenarioData.bossClass;
     }
 
     getScenarioId() {
@@ -29,15 +28,22 @@ export class Boss {
         if (this.scenarioData.health !== undefined) {
             return this.scenarioData.health;
         }
-        return this.monsterStats.health;
+        return this.getMaxHealth();
     }
 
     getMaxHealth() {
         // Returning the max in case a single monster gets some sort of buff that bumps it above max health.
         if (this.scenarioData.health !== undefined) {
-            return Math.max(this.monsterStats.health, this.scenarioData.health);
+            return Math.max(this.getBaseMaxHealth(), this.scenarioData.health);
         }
-        return this.monsterStats.health;
+        return this.getBaseMaxHealth();
+    }
+
+    private getBaseMaxHealth(): number {
+        const match = this.bossStats.health.match(BOSS_HEALTH_CHARACTER_REGEX);
+        if (match.length === 2) {
+            return this.party.numCharacters * parseInt(match.groups[1]);
+        }
     }
 
     getType(): MonsterType {

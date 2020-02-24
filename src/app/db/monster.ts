@@ -1,8 +1,9 @@
 import { ScenarioMonsterData } from '../../types/party';
 import { MonsterStats, MonsterData, MonsterType } from '../../types/monsters';
 import { StatusEffect } from '../../types/status';
+import { Enemy } from './enemy';
 
-export class Monster {
+export class Monster implements Enemy {
     /** Serializable data specific to this instance of the monster. */
     private scenarioData: ScenarioMonsterData;
 
@@ -13,8 +14,8 @@ export class Monster {
         this.onNewScenarioData(scenarioData);
     }
 
-    getMonsterId() {
-        return this.scenarioData.monsterId;
+    getClassId() {
+        return this.scenarioData.monsterClass;
     }
 
     getTokenId() {

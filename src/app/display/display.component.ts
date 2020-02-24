@@ -3,7 +3,7 @@ import { DbService } from '../services/db.service';
 import { MonsterData, BossData } from '../../types/monsters';
 import { Party } from '../../types/party';
 import { Observable } from 'rxjs';
-import { Monster } from '../db/monsters';
+import { Monster } from '../db/monster';
 
 @Component({
   selector: 'app-display',
@@ -18,7 +18,7 @@ export class DisplayComponent implements OnInit {
   public monsterClassList: MonsterData[];
   public monstersByClass: Map<MonsterData, Monster[]> = new Map();
 
-  private monsterIdMap: Map<number, Monster> = new Map();
+  private monsterClassMap: Map<number, Monster> = new Map();
   private party_: Observable<Party>;
   private partyMonsters_: Observable<Monster[]>;
 
@@ -41,15 +41,15 @@ export class DisplayComponent implements OnInit {
     const monstersByClassId: Map<string, Monster[]> = new Map();
 
     for (const monster of partyMonsters) {
-      if (monstersByClassId.has(monster.getMonsterId())) {
-        monstersByClassId.get(monster.getMonsterId()).push(monster);
+      if (monstersByClassId.has(monster.getClassId())) {
+        monstersByClassId.get(monster.getClassId()).push(monster);
       } else {
-        monstersByClassId.set(monster.getMonsterId(), [monster]);
+        monstersByClassId.set(monster.getClassId(), [monster]);
       }
     }
 
     const monstersByClass: Map<MonsterData, Monster[]> = new Map();
-    for (const [monsterId, monsters] of monstersByClassId.entries()) {
+    for (const [monsterClass, monsters] of monstersByClassId.entries()) {
       const sortedMonsters = monsters.sort((m1, m2) => m1.compareTo(m2));
       monstersByClass.set(monsters[0].getGenericMonsterData(), sortedMonsters);
     }

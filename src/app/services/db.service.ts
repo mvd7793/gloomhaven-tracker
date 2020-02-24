@@ -5,14 +5,14 @@ import { map, first, flatMap } from 'rxjs/operators';
 import { MonsterData, BossData, MonsterType, MonsterStats } from '../../types/monsters';
 import { MONSTERS_COLLECTION, BOSS_COLLECTION as BOSSES_COLLECTION, PARTY_COLLECTION as PARTIES_COLLECTION, DEFAULT_PARTY, PARTY_MONSTERS_COLLECTION, PARTY_COLLECTION } from '../config/db';
 import { Party, ScenarioMonsterData } from '../../types/party';
-import { Monster } from '../db/monsters';
+import { Monster } from '../db/monster';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DbService {
   private monsterDataMap: ReplaySubject<Map<String, MonsterData>> = new ReplaySubject(1);
-  private monsterIdMap: Map<string, Monster> = new Map();
+  private monsterClassMap: Map<string, Monster> = new Map();
 
   constructor(private af: AngularFirestore) {
     this.initMonsterMap();
@@ -30,13 +30,13 @@ export class DbService {
    * 
    * @param data from the current scenario
    */
-  getMonsterDataById(monsterId: string): Observable<MonsterData> {
+  getMonsterDataById(monsterClass: string): Observable<MonsterData> {
     return this.monsterDataMap.pipe(first(), map(monsterMap => {
-      if (!monsterMap.has(monsterId)) {
-        console.error('Invalid monster specified: ', monsterId);
+      if (!monsterMap.has(monsterClass)) {
+        console.error('Invalid monster specified: ', monsterClass);
         return null;
       }
-      return monsterMap.get(monsterId);
+      return monsterMap.get(monsterClass);
     }));
   }
 
@@ -93,13 +93,13 @@ export class DbService {
    */
   private getMonsterForScenarioData(scenarioData: ScenarioMonsterData): Observable<Monster> {
     // Monster objects that already exist should simply receive new ScenarioData.
-    if (this.monsterIdMap.has(scenarioData.id)) {
-      this.monsterIdMap.get(scenarioData.id).onNewScenarioData(scenarioData);
-      return of(this.monsterIdMap.get(scenarioData.id));
+    if (this.monsterClassMap.has(scenarioData.id)) {
+      this.monsterClassMap.get(scenarioData.id).onNewScenarioData(scenarioData);
+      return of(this.monsterClassMap.get(scenarioData.id));
     } else {
-      return this.getMonsterDataById(scenarioData.monsterId).pipe(map(monsterData => {
+      return this.getMonsterDataById(scenarioData.monsterClass).pipe(map(monsterData => {
         const monster = new Monster(scenarioData, monsterData);
-        this.monsterIdMap.set(scenarioData.id, monster);
+        this.monsterClassMap.set(scenarioData.id, monster);
         return monster;
       }));
     }

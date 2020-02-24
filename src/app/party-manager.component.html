@@ -11,7 +11,7 @@
         <form #createForm="ngForm" (ngSubmit)="createMonsters()" autocomplete="off">
             <input [(ngModel)]="createMonsterData.monsterName" (typeaheadOnSelect)="onCreateMonsterSelected($event)"
                 [typeahead]="allMonsterData" [typeaheadAsync]="true" typeaheadOptionField="displayName"
-                placeholder="Select a monster" name="monsterId" class="form-control" required>
+                placeholder="Select a monster" name="monsterClass" class="form-control" required>
             <input [(ngModel)]="createMonsterData.numMonsters" type="number" name="numMonsters"
                 placeholder="How many monsters" class="form-control" required>
             <input [(ngModel)]="createMonsterData.level" type="number" name="level" placeholder="Level"
