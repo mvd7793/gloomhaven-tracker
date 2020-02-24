@@ -18,8 +18,6 @@ export class PartyManagerComponent implements OnInit {
   private partyMonsters$: Observable<Monster[]>;
   private partyMonsters: Monster[] = [];
 
-  // TODO(mdierker): Figure out how to fix this.
-  public monsterClassList: MonsterData[];
   public monstersByClass: Map<MonsterData, Monster[]> = new Map();
 
   public allMonsterData: Observable<MonsterData[]>;
@@ -97,7 +95,6 @@ export class PartyManagerComponent implements OnInit {
       monstersByClass.set(monsters[0].getGenericMonsterData(), sortedMonsters);
     }
     this.monstersByClass = monstersByClass;
-    this.monsterClassList = Array.from(this.monstersByClass.keys());
   }
 
   private initializeChromecast() {

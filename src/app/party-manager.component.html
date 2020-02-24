@@ -1,18 +1,11 @@
 <main role="main" class="container">
-    <div class="monster-class" *ngFor="let monsterData of monsterClassList">
-        <div class="monster-name">{{monsterData.displayName}}</div>
-        <ng-container *ngFor="let monster of monstersByClass.get(monsterData)">
+    <div class="monster-class" *ngFor="let entry of (monstersByClass | keyvalue)">
+        <div class="monster-name">{{entry.key.displayName}}</div>
+        <ng-container *ngFor="let monster of entry.value">
             <party-monster-cell [monster]="monster" *ngIf="!monster.isDead()"></party-monster-cell>
         </ng-container>
     </div>
     <hr>
-    <h1>Dead Monsters</h1>
-    <div class="monster-class" *ngFor="let monsterData of monsterClassList">
-        <div class="monster-name">{{monsterData.displayName}}</div>
-        <ng-container *ngFor="let monster of monstersByClass.get(monsterData)">
-            <party-monster-cell [monster]="monster" *ngIf="monster.isDead()"></party-monster-cell>
-        </ng-container>
-    </div>
     <div class="create-monsters">
         <p><strong>Add new monsters</strong></p>
         <form #createForm="ngForm" (ngSubmit)="createMonsters()" autocomplete="off">

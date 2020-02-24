@@ -63,7 +63,7 @@ export class DbService {
       .valueChanges()
       .pipe(flatMap(scenarioMonsters => {
         // Preemptively return an empty list as forkJoin([]) never fires.
-        if (scenarioMonsters.length == 0) {
+        if (scenarioMonsters.length === 0) {
           return of([]);
         }
         const monsterObservables: Observable<Monster>[] = [];
@@ -107,11 +107,16 @@ export class DbService {
 
   saveMonster(monster: Monster) {
     const saveData = monster.getSaveData();
-    this.af.collection(PARTIES_COLLECTION)
+    const monsterDoc = this.af.collection(PARTIES_COLLECTION)
       .doc(DEFAULT_PARTY)
       .collection(PARTY_MONSTERS_COLLECTION)
-      .doc(saveData.id)
-      .set(saveData);
+      .doc(saveData.id);
+    // Remove dead monsters
+    if (monster.isDead()) {
+      monsterDoc.delete();
+    } else {
+      monsterDoc.set(saveData);
+    }
   }
 
   getAllBosses(): Observable<BossData[]> {

@@ -14,7 +14,7 @@ export class PartyMonsterCellComponent implements OnInit {
   public monster: Monster;
 
   public allStatuses: StatusEffect[];
-  public statusesVisible: boolean = false;
+  public statusesVisible = false;
 
   constructor(private db: DbService) { }
 
