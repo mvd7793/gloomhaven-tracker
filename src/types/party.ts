@@ -2,8 +2,9 @@ import { MonsterType } from './monsters';
 
 export interface Party {
     averageCharacterLevel: number;
-    monsters: ScenarioMonsterData[]
+    monsters: ScenarioMonsterData[];
     bosses: ScenarioBossData[];
+    scenarioLevel: number;
 }
 
 export interface ScenarioMonsterData {

@@ -11,4 +11,8 @@
             <img class="monster-status-icon" src="{{status.getImgPath()}}">
         </span>
     </div>
+    <div class="monster-active-statuses" *ngFor="let status of monster.getStatuses()">
+        <img src="{{status.getImgPath()}}" class="monster-status-icon">
+        <span class="monster-status-text">{{status.displayName}}</span>
+    </div>
 </div>

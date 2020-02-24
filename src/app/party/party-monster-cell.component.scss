@@ -8,14 +8,26 @@
     flex-wrap: wrap;
 }
 
+.monster-active-statuses {
+    display: flex;
+    margin-top: 3px;
+}
+
+.monster-status-text {
+    align-self:center;
+    font-size: 14pt;
+    margin-left: 5px;
+}
+
+
 .monster-status {
     margin: 8px;
-
-    .monster-status-icon {
-        width: 32px;
-    }
-
     &:not(.active) .monster-status-icon {
         opacity: 0.5;
     }
+}
+
+.monster-status-icon {
+    height: 32px;
+    width: 32px;
 }

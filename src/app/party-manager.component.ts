@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { Monster } from './db/monsters';
 import { MonsterData, MonsterType } from '../types/monsters';
 import { max } from 'rxjs/operators';
-import { ScenarioMonsterData } from '../types/party';
+import { ScenarioMonsterData, Party } from '../types/party';
 import { TypeaheadMatch } from 'ngx-bootstrap/typeahead/public_api';
 import { StatusEffect } from '../types/status';
 
@@ -22,6 +22,7 @@ export class PartyManagerComponent implements OnInit {
 
   public allMonsterData: Observable<MonsterData[]>;
   public createMonsterData = {} as CreateMonsterData;
+  public party: Party;
 
   constructor(private db: DbService) { }
 
@@ -29,6 +30,12 @@ export class PartyManagerComponent implements OnInit {
     this.partyMonsters$ = this.db.getPartyMonsters();
     this.partyMonsters$.subscribe(partyMonsters => this.onPartyMonstersUpdate(partyMonsters));
     this.allMonsterData = this.db.getAllMonsters();
+    this.db.getParty().subscribe(party => {
+      this.party = party;
+      if (!this.createMonsterData.level) {
+        this.createMonsterData.level = this.party.scenarioLevel;
+      }
+    });
 
     this.initializeChromecast();
   }
@@ -64,11 +71,11 @@ export class PartyManagerComponent implements OnInit {
   }
 
   /**
-   * Returns the next unused token for the given monster type. 
+   * Returns the next unused token for the given monster type.
    */
   private getNextTokenId(monsterId: string): number {
     const usedNumbers = new Set(this.partyMonsters
-      .filter(monster => monster.getMonsterId() == monsterId)
+      .filter(monster => monster.getMonsterId() === monsterId)
       .map(monster => monster.getTokenId()));
     // Return the next available number starting from 1 since tokens begin at 1.
     let maxUnusedNum = 1;
