@@ -55,7 +55,9 @@ export class PartyManagerComponent implements OnInit {
       newMonsters.push(scenarioData);
     }
     this.db.createPartyMonsters(newMonsters);
-    this.createMonsterData = {} as CreateMonsterData;
+    this.createMonsterData = {
+      level: this.party.scenarioLevel,
+    } as CreateMonsterData;
   }
 
   onCreateMonsterSelected(evt: TypeaheadMatch) {
