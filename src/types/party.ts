@@ -12,6 +12,9 @@ export interface ScenarioEnemyData {
     /** Local ID of this monster, unique for both bosses and monsters within the current scenario. */
     id: string;
 
+    /** Level of the monster. */
+    level: number;
+
     /** Current health. If missing, uses monster default from the DB. */
     health?: number;
 
@@ -25,9 +28,6 @@ export interface ScenarioMonsterData extends ScenarioEnemyData {
 
     /** Type of monster, matching a monsterClass from the monster DB. */
     monsterClass: string;
-
-    /** Level of the monster. */
-    level: number;
 
     /** Type of the monster, either "normal" or "elite". */
     type: MonsterType;

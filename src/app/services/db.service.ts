@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Observable, ReplaySubject, of, forkJoin } from 'rxjs';
 import { map, first, flatMap } from 'rxjs/operators';
-import { MonsterData, BossData, MonsterType, MonsterStats } from '../../types/monsters';
-import { MONSTERS_COLLECTION, BOSS_COLLECTION as BOSSES_COLLECTION, PARTY_COLLECTION as PARTIES_COLLECTION, DEFAULT_PARTY, PARTY_MONSTERS_COLLECTION, PARTY_COLLECTION } from '../config/db';
+import { MonsterData, BossData, MonsterType, MonsterStats, EnemyData } from '../../types/monsters';
+// tslint:disable-next-line:max-line-length
+import { MONSTERS_COLLECTION, BOSS_COLLECTION as BOSSES_COLLECTION, PARTY_COLLECTION as PARTIES_COLLECTION, DEFAULT_PARTY, PARTY_MONSTERS_COLLECTION, PARTY_COLLECTION, BOSS_COLLECTION } from '../config/db';
 import { Party, ScenarioMonsterData } from '../../types/party';
 import { Monster } from '../db/monster';
 
@@ -11,15 +12,25 @@ import { Monster } from '../db/monster';
   providedIn: 'root'
 })
 export class DbService {
-  private monsterDataMap: ReplaySubject<Map<String, MonsterData>> = new ReplaySubject(1);
+  private monsterDataMap: ReplaySubject<Map<string, MonsterData>> = new ReplaySubject(1);
+  private bossDataMap: ReplaySubject<Map<string, BossData>> = new ReplaySubject(1);
   private monsterClassMap: Map<string, Monster> = new Map();
 
   constructor(private af: AngularFirestore) {
-    this.initMonsterMap();
+    this.initEnemyMaps();
   }
 
   getAllMonsters(): Observable<MonsterData[]> {
     return this.monsterDataMap.pipe(map(monsterMap => Array.from(monsterMap.values())));
+  }
+
+  getAllBosses(): Observable<BossData[]> {
+    return this.bossDataMap.pipe(map(bossDataMap => Array.from(bossDataMap.values())));
+  }
+
+  getAllEnemies(): Observable<EnemyData[]> {
+    return forkJoin([this.getAllMonsters().pipe(first()), this.getAllBosses().pipe(first())])
+      .pipe(map(([monsters, bosses]) => [...monsters, ...bosses]));
   }
 
   /**
@@ -119,10 +130,6 @@ export class DbService {
     }
   }
 
-  getAllBosses(): Observable<BossData[]> {
-    return this.af.collection<BossData>(BOSSES_COLLECTION).valueChanges();
-  }
-
   getParty(): Observable<Party> {
     return this.af.collection(PARTIES_COLLECTION).doc<Party>(DEFAULT_PARTY).valueChanges();
   }
@@ -130,7 +137,7 @@ export class DbService {
   /**
    * Initializes local storage for all monster stats.
    */
-  private initMonsterMap() {
+  private initEnemyMaps() {
     this.af.collection<MonsterData>(MONSTERS_COLLECTION).get()
       .subscribe(monsterDocs => {
         const monsterMap = new Map<string, MonsterData>(
@@ -140,6 +147,16 @@ export class DbService {
           })
         );
         this.monsterDataMap.next(monsterMap);
+      });
+    this.af.collection<BossData>(BOSS_COLLECTION).get()
+      .subscribe(bossDocs => {
+        const bossMap = new Map<string, BossData>(
+          bossDocs.docs.map(bossDoc => {
+            const bossData = bossDoc.data() as BossData;
+            return [bossData.id, bossData];
+          })
+        );
+        this.bossDataMap.next(bossMap);
       });
   }
 }

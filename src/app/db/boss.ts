@@ -1,5 +1,5 @@
 import { ScenarioMonsterData, ScenarioBossData, Party } from '../../types/party';
-import { MonsterStats, MonsterData, MonsterType, BossStats } from '../../types/monsters';
+import { MonsterStats, MonsterData, MonsterType, BossStats, BossData } from '../../types/monsters';
 import { StatusEffect } from '../../types/status';
 import { Enemy } from './enemy';
 
@@ -9,10 +9,10 @@ export class Boss implements Enemy {
     /** Serializable data specific to this instance of the boss. */
     private scenarioData: ScenarioBossData;
 
-    /** Stats specific to this type of boss. */
+    /** Stats specific to this level of boss. */
     private bossStats: BossStats;
 
-    constructor(scenarioData: ScenarioMonsterData, private monsterData: MonsterData, private party: Party) {
+    constructor(scenarioData: ScenarioBossData, private bossData: BossData, private party: Party) {
         this.onNewScenarioData(scenarioData);
     }
 
@@ -42,16 +42,12 @@ export class Boss implements Enemy {
     private getBaseMaxHealth(): number {
         const match = this.bossStats.health.match(BOSS_HEALTH_CHARACTER_REGEX);
         if (match.length === 2) {
-            return this.party.numCharacters * parseInt(match.groups[1]);
+            return this.party.numCharacters * parseInt(match.groups[1], 10);
         }
     }
 
-    getType(): MonsterType {
-        return this.scenarioData.type;
-    }
-
     getDisplayName() {
-        return this.monsterData.displayName;
+        return this.bossData.displayName;
     }
 
     getStatuses(): StatusEffect[] {
@@ -71,26 +67,19 @@ export class Boss implements Enemy {
         }
     }
 
-    /**
-     * Returns the generic data about this type of monster.
-     */
-    getGenericMonsterData() {
-        return this.monsterData;
-    }
-
     isDead(): boolean {
         return this.getHealth() <= 0;
     }
 
-    compareTo(other: Monster) {
+    compareTo(other: Boss) {
         if (this.isDead() !== other.isDead()) {
             return this.isDead() ? 1 : -1;
         }
-        if (this.scenarioData.type !== other.scenarioData.type) {
-            return this.scenarioData.type.localeCompare(other.scenarioData.type);
+        if (this.getClassId() !== other.getClassId()) {
+            return this.getClassId().localeCompare(other.getClassId());
         }
-        return this.scenarioData.tokenId - other.scenarioData.tokenId;
-
+        // There can be multiple instances of a boss, but they don't have a tokenId.
+        return this.scenarioData.id.localeCompare(other.scenarioData.id);
     }
 
     setHealth(health: number) {
@@ -100,12 +89,16 @@ export class Boss implements Enemy {
     /**
      * Returns the data that should be persisted to Firebase for this monster.
      */
-    getSaveData(): ScenarioMonsterData {
+    getSaveData(): ScenarioBossData {
         return this.scenarioData;
     }
 
-    async onNewScenarioData(data: ScenarioMonsterData) {
+    async onNewScenarioData(data: ScenarioBossData) {
         this.scenarioData = data;
-        this.monsterStats = this.monsterData.levelStats[data.level][data.type];
+        this.bossStats = this.bossData.levelStats[data.level];
+    }
+
+    async onNewParty(party: Party) {
+        this.party = party;
     }
 }

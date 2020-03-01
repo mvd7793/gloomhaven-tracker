@@ -1,23 +1,25 @@
+export interface EnemyData {
+    /** lowercase_underscore format name of the boss. */
+    id: string;
+
+    /** Display name of the boss. */
+    displayName: string;
+}
+
 /**
  * Top level interface for Monster stats.
  */
-export interface MonsterData {
-    /** lowercase_underscore format name of the monster. */
-    id: string;
-
-    /** Display name of the monster. */
-    displayName: string;
-
+export interface MonsterData extends EnemyData {
     /** Level --> stats for a monster. */
-    levelStats: {[level: number]: MonsterLevelStats};
+    levelStats: { [level: number]: MonsterLevelStats };
 }
 
 /**
  * Stats for monsters at a specific level.
  */
 export interface MonsterLevelStats {
-    normal: MonsterStats,
-    elite: MonsterStats,
+    normal: MonsterStats;
+    elite: MonsterStats;
 }
 
 export interface MonsterStats {
@@ -32,19 +34,13 @@ export interface MonsterStats {
  * Enum tracking the valid options for MonsterLevelStats.
  */
 export enum MonsterType {
-    NORMAL = "normal",
-    ELITE = "elite",
+    NORMAL = 'normal',
+    ELITE = 'elite',
 }
 
-export interface BossData {
-    /** lowercase_underscore format name of the boss. */
-    id: string;
-
-    /** Display name of the boss. */
-    displayName: string;
-
+export interface BossData extends EnemyData {
     /** Level --> stats r a boss. */
-    levelStats: {number: BossStats};
+    levelStats: { number: BossStats };
 }
 
 export interface BossStats {

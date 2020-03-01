@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DbService } from './services/db.service';
 import { Observable } from 'rxjs';
 import { Monster } from './db/monster';
-import { MonsterData, MonsterType } from '../types/monsters';
+import { MonsterData, MonsterType, EnemyData } from '../types/monsters';
 import { max } from 'rxjs/operators';
 import { ScenarioMonsterData, Party } from '../types/party';
 import { TypeaheadMatch } from 'ngx-bootstrap/typeahead/public_api';
@@ -20,8 +20,8 @@ export class PartyManagerComponent implements OnInit {
 
   public monstersByClass: Map<MonsterData, Monster[]> = new Map();
 
-  public allMonsterData: Observable<MonsterData[]>;
-  public createMonsterData = {} as CreateMonsterData;
+  public allEnemyData: Observable<EnemyData[]>;
+  public createMonsterData = {} as CreateEnemyData;
   public party: Party;
 
   constructor(private db: DbService) { }
@@ -29,7 +29,7 @@ export class PartyManagerComponent implements OnInit {
   ngOnInit() {
     this.partyMonsters$ = this.db.getPartyMonsters();
     this.partyMonsters$.subscribe(partyMonsters => this.onPartyMonstersUpdate(partyMonsters));
-    this.allMonsterData = this.db.getAllMonsters();
+    this.allEnemyData = this.db.getAllEnemies();
     this.db.getParty().subscribe(party => {
       this.party = party;
       if (!this.createMonsterData.level) {
@@ -120,9 +120,10 @@ export class PartyManagerComponent implements OnInit {
   }
 }
 
-interface CreateMonsterData {
-  monsterClass: string;
-  monsterName: string;
+interface CreateEnemyData {
+  enemyClass: string;
+  // Included for autocomplete component.
+  enemyName: string;
   numMonsters: number;
   level: number;
   elite: boolean;
