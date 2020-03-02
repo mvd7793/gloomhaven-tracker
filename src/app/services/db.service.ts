@@ -87,6 +87,28 @@ export class DbService {
       }));
   }
 
+  /**
+   * Returns wrapper objects for Monsters in a given party, including 
+   * both scenario-specific data and generic MonsterData.
+   */
+  getPartyBosses(): Observable<Boss[]> {
+    return this.af.collection(PARTY_COLLECTION)
+      .doc(DEFAULT_PARTY)
+      .collection<ScenarioMonsterData>(PARTY_MONSTERS_COLLECTION)
+      .valueChanges()
+      .pipe(flatMap(scenarioMonsters => {
+        // Preemptively return an empty list as forkJoin([]) never fires.
+        if (scenarioMonsters.length === 0) {
+          return of([]);
+        }
+        const monsterObservables: Observable<Monster>[] = [];
+        for (const scenarioData of scenarioMonsters) {
+          monsterObservables.push(this.getMonsterForScenarioData(scenarioData));
+        }
+        return forkJoin(monsterObservables);
+      }));
+  }
+
   deletePartyMonsters() {
     const partyMonstersCollection = this.af.collection(PARTY_COLLECTION)
       .doc(DEFAULT_PARTY)
