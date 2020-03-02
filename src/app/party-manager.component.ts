@@ -42,12 +42,11 @@ export class PartyManagerComponent implements OnInit {
 
   createMonsters() {
     const newMonsters = [];
-    let tokenId = this.getNextTokenId(this.createMonsterData.monsterClass);
     for (let i = 0; i < this.createMonsterData.numMonsters; i++) {
       const scenarioData: ScenarioMonsterData = {
         id: '', // Generated in the service
-        tokenId: tokenId++,
-        monsterClass: this.createMonsterData.monsterClass,
+        tokenId: this.getNextTokenId(this.createMonsterData.enemyClass),
+        enemyClass: this.createMonsterData.enemyClass,
         level: this.createMonsterData.level,
         type: this.createMonsterData.elite ? MonsterType.ELITE : MonsterType.NORMAL,
         statuses: [],
@@ -61,7 +60,7 @@ export class PartyManagerComponent implements OnInit {
   }
 
   onCreateMonsterSelected(evt: TypeaheadMatch) {
-    this.createMonsterData.monsterClass = evt.item.id;
+    this.createMonsterData.enemyClass = evt.item.id;
   }
 
   deleteAllMonsters() {
@@ -75,9 +74,9 @@ export class PartyManagerComponent implements OnInit {
   /**
    * Returns the next unused token for the given monster type.
    */
-  private getNextTokenId(monsterClass: string): number {
+  private getNextTokenId(enemyClass: string): number {
     const usedNumbers = new Set(this.partyMonsters
-      .filter(monster => monster.getClassId() === monsterClass)
+      .filter(monster => monster.getClassId() === enemyClass)
       .map(monster => monster.getTokenId()));
     // Return the next available number starting from 1 since tokens begin at 1.
     let maxUnusedNum = 1;
@@ -99,7 +98,7 @@ export class PartyManagerComponent implements OnInit {
     }
 
     const monstersByClass: Map<MonsterData, Monster[]> = new Map();
-    for (const [monsterClass, monsters] of monstersByClassId.entries()) {
+    for (const [enemyClass, monsters] of monstersByClassId.entries()) {
       const sortedMonsters = monsters.sort((m1, m2) => m1.getTokenId() - m2.getTokenId());
       monstersByClass.set(monsters[0].getGenericMonsterData(), sortedMonsters);
     }

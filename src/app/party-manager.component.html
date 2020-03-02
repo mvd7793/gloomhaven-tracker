@@ -9,15 +9,15 @@
     <div class="create-monsters">
         <p><strong>Add new monsters</strong></p>
         <form #createForm="ngForm" (ngSubmit)="createMonsters()" autocomplete="off">
-            <input [(ngModel)]="createMonsterData.monsterName" (typeaheadOnSelect)="onCreateMonsterSelected($event)"
+            <input [(ngModel)]="createEnemyData.enemyName" (typeaheadOnSelect)="onCreateMonsterSelected($event)"
                 [typeahead]="allEnemyData" [typeaheadAsync]="true" typeaheadOptionField="displayName"
                 placeholder="Select a monster" name="monsterClass" class="form-control" required>
-            <input [(ngModel)]="createMonsterData.numMonsters" type="number" name="numMonsters"
+            <input [(ngModel)]="createEnemyData.numMonsters" type="number" name="numMonsters"
                 placeholder="How many monsters" class="form-control" required>
-            <input [(ngModel)]="createMonsterData.level" type="number" name="level" placeholder="Level"
-                class="form-control" required [(ngModel)]="createMonsterData.level" disabled>
+            <input [(ngModel)]="createEnemyData.level" type="number" name="level" placeholder="Level"
+                class="form-control" required [(ngModel)]="createEnemyData.level" disabled>
             <div class="form-check">
-                <input type="checkbox" [(ngModel)]="createMonsterData.elite" name="elite" class="form-check-input"
+                <input type="checkbox" [(ngModel)]="createEnemyData.elite" name="elite" class="form-check-input"
                     id="createMonsterElite">
                 <label class="form-check-label" for="createMonsterElite">Elite</label>
             </div>
