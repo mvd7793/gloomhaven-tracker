@@ -8,15 +8,15 @@
     <hr>
     <div class="create-monsters">
         <p><strong>Add new monsters</strong></p>
-        <form #createForm="ngForm" (ngSubmit)="createMonsters()" autocomplete="off">
-            <input [(ngModel)]="createEnemyData.enemyName" (typeaheadOnSelect)="onCreateMonsterSelected($event)"
+        <form #createForm="ngForm" (ngSubmit)="createEnemies()" autocomplete="off">
+            <input [(ngModel)]="createEnemyData.enemyName" (typeaheadOnSelect)="onCreateEnemySelected($event)"
                 [typeahead]="allEnemyData" [typeaheadAsync]="true" typeaheadOptionField="displayName"
-                placeholder="Select a monster" name="monsterClass" class="form-control" required>
+                placeholder="Select an enemy" name="monsterClass" class="form-control" required>
             <input [(ngModel)]="createEnemyData.numMonsters" type="number" name="numMonsters"
                 placeholder="How many monsters" class="form-control" required>
             <input [(ngModel)]="createEnemyData.level" type="number" name="level" placeholder="Level"
                 class="form-control" required [(ngModel)]="createEnemyData.level" disabled>
-            <div class="form-check">
+            <div class="form-check" *ngIf="!createEnemyData.isBoss">
                 <input type="checkbox" [(ngModel)]="createEnemyData.elite" name="elite" class="form-check-input"
                     id="createMonsterElite">
                 <label class="form-check-label" for="createMonsterElite">Elite</label>

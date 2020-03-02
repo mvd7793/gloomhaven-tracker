@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { Monster } from './db/monster';
 import { MonsterData, MonsterType, EnemyData } from '../types/monsters';
 import { max } from 'rxjs/operators';
-import { ScenarioMonsterData, Party } from '../types/party';
+import { ScenarioMonsterData, Party, ScenarioBossData } from '../types/party';
 import { TypeaheadMatch } from 'ngx-bootstrap/typeahead/public_api';
 import { StatusEffect } from '../types/status';
 
@@ -21,7 +21,7 @@ export class PartyManagerComponent implements OnInit {
   public monstersByClass: Map<MonsterData, Monster[]> = new Map();
 
   public allEnemyData: Observable<EnemyData[]>;
-  public createMonsterData = {} as CreateEnemyData;
+  public createEnemyData = {} as CreateEnemyData;
   public party: Party;
 
   constructor(private db: DbService) { }
@@ -32,35 +32,53 @@ export class PartyManagerComponent implements OnInit {
     this.allEnemyData = this.db.getAllEnemies();
     this.db.getParty().subscribe(party => {
       this.party = party;
-      if (!this.createMonsterData.level) {
-        this.createMonsterData.level = this.party.scenarioLevel;
+      if (!this.createEnemyData.level) {
+        this.createEnemyData.level = this.party.scenarioLevel;
       }
     });
 
     this.initializeChromecast();
   }
 
-  createMonsters() {
+  createEnemies() {
     const newMonsters = [];
-    for (let i = 0; i < this.createMonsterData.numMonsters; i++) {
-      const scenarioData: ScenarioMonsterData = {
-        id: '', // Generated in the service
-        tokenId: this.getNextTokenId(this.createMonsterData.enemyClass),
-        enemyClass: this.createMonsterData.enemyClass,
-        level: this.createMonsterData.level,
-        type: this.createMonsterData.elite ? MonsterType.ELITE : MonsterType.NORMAL,
-        statuses: [],
-      };
-      newMonsters.push(scenarioData);
+    for (let i = 0; i < this.createEnemyData.numMonsters; i++) {
+      if (this.createEnemyData.isBoss) {
+        const data: ScenarioBossData = {
+          id: '', // Generated in the service
+          bossClass: this.createEnemyData.bossClass,
+          level: this.createEnemyData.level,
+          statuses: [],
+        };
+        newMonsters.push(data);
+      } else {
+        const data: ScenarioMonsterData = {
+          id: '', // Generated in the service
+          tokenId: this.getNextTokenId(this.createEnemyData.monsterClass),
+          monsterClass: this.createEnemyData.monsterClass,
+          level: this.createEnemyData.level,
+          type: this.createEnemyData.elite ? MonsterType.ELITE : MonsterType.NORMAL,
+          statuses: [],
+        };
+        newMonsters.push(data);
+      }
     }
     this.db.createPartyMonsters(newMonsters);
-    this.createMonsterData = {
+    this.createEnemyData = {
       level: this.party.scenarioLevel,
-    } as CreateMonsterData;
+    } as CreateEnemyData;
   }
 
-  onCreateMonsterSelected(evt: TypeaheadMatch) {
-    this.createMonsterData.enemyClass = evt.item.id;
+  onCreateEnemySelected(evt: TypeaheadMatch) {
+    this.db.getMonsterDataById(evt.item.id).subscribe(monsterData => {
+      if (monsterData) {
+        this.createEnemyData.monsterClass = evt.item.id;
+        this.createEnemyData.isBoss = false;
+      } else {
+        this.createEnemyData.bossClass = evt.item.id;
+        this.createEnemyData.isBoss = true;
+      }
+    });
   }
 
   deleteAllMonsters() {
@@ -120,10 +138,15 @@ export class PartyManagerComponent implements OnInit {
 }
 
 interface CreateEnemyData {
-  enemyClass: string;
-  // Included for autocomplete component.
-  enemyName: string;
+  monsterClass: string;
+  bossClass: string;
+
   numMonsters: number;
   level: number;
   elite: boolean;
+
+  // UI-only
+  isBoss: boolean;
+  // Included for autocomplete component.
+  enemyName: string;
 }

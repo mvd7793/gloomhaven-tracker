@@ -5,8 +5,9 @@ import { map, first, flatMap } from 'rxjs/operators';
 import { MonsterData, BossData, MonsterType, MonsterStats, EnemyData } from '../../types/monsters';
 // tslint:disable-next-line:max-line-length
 import { MONSTERS_COLLECTION, BOSS_COLLECTION as BOSSES_COLLECTION, PARTY_COLLECTION as PARTIES_COLLECTION, DEFAULT_PARTY, PARTY_MONSTERS_COLLECTION, PARTY_COLLECTION, BOSS_COLLECTION } from '../config/db';
-import { Party, ScenarioMonsterData } from '../../types/party';
+import { Party, ScenarioMonsterData, ScenarioEnemyData } from '../../types/party';
 import { Monster } from '../db/monster';
+import { Boss } from '../db/boss';
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +16,7 @@ export class DbService {
   private monsterDataMap: ReplaySubject<Map<string, MonsterData>> = new ReplaySubject(1);
   private bossDataMap: ReplaySubject<Map<string, BossData>> = new ReplaySubject(1);
   private monsterClassMap: Map<string, Monster> = new Map();
+  private bossClassMap: Map<string, Boss> = new Map();
 
   constructor(private af: AngularFirestore) {
     this.initEnemyMaps();
@@ -51,14 +53,14 @@ export class DbService {
     }));
   }
 
-  createPartyMonsters(newMonsters: ScenarioMonsterData[]) {
+  createPartyMonsters(newEnemies: ScenarioEnemyData[]) {
     const batch = this.af.firestore.batch();
-    for (const newMonster of newMonsters) {
-      newMonster.id = this.af.createId();
+    for (const newEnemy of newEnemies) {
+      newEnemy.id = this.af.createId();
       batch.set(
         this.af.collection(PARTIES_COLLECTION).doc(DEFAULT_PARTY)
-          .collection(PARTY_MONSTERS_COLLECTION).doc(newMonster.id).ref,
-        newMonster);
+          .collection(PARTY_MONSTERS_COLLECTION).doc(newEnemy.id).ref,
+        newEnemy);
     }
     batch.commit();
   }
