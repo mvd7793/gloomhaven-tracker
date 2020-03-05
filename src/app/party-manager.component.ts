@@ -15,8 +15,8 @@ import { StatusEffect } from '../types/status';
 })
 export class PartyManagerComponent implements OnInit {
 
-  private partyMonsters$: Observable<Monster[]>;
-  private partyMonsters: Monster[] = [];
+  private partyEnemies$: Observable<Monster[]>;
+  private partyEnemies: Monster[] = [];
 
   public monstersByClass: Map<MonsterData, Monster[]> = new Map();
 
@@ -27,8 +27,8 @@ export class PartyManagerComponent implements OnInit {
   constructor(private db: DbService) { }
 
   ngOnInit() {
-    this.partyMonsters$ = this.db.getPartyMonsters();
-    this.partyMonsters$.subscribe(partyMonsters => this.onPartyMonstersUpdate(partyMonsters));
+    this.partyEnemies$ = this.db.getPartyEnemies();
+    this.partyEnemies$.subscribe(partyEnemies => this.onPartyEnemiesUpdate(partyEnemies));
     this.allEnemyData = this.db.getAllEnemies();
     this.db.getParty().subscribe(party => {
       this.party = party;
@@ -63,7 +63,7 @@ export class PartyManagerComponent implements OnInit {
         newMonsters.push(data);
       }
     }
-    this.db.createPartyMonsters(newMonsters);
+    this.db.createPartyEnemies(newMonsters);
     this.createEnemyData = {
       level: this.party.scenarioLevel,
     } as CreateEnemyData;
@@ -84,7 +84,7 @@ export class PartyManagerComponent implements OnInit {
   deleteAllMonsters() {
     if (confirm('Are you sure you wish to delete all monsters? THIS WILL CLEAR ALL HEALTH TRACKING.')) {
       if (confirm('Are you *absolutely sure* you want to irrevocably delete everything?')) {
-        this.db.deletePartyMonsters();
+        this.db.deletePartyEnemies();
       }
     }
   }
@@ -93,7 +93,7 @@ export class PartyManagerComponent implements OnInit {
    * Returns the next unused token for the given monster type.
    */
   private getNextTokenId(enemyClass: string): number {
-    const usedNumbers = new Set(this.partyMonsters
+    const usedNumbers = new Set(this.partyEnemies
       .filter(monster => monster.getClassId() === enemyClass)
       .map(monster => monster.getTokenId()));
     // Return the next available number starting from 1 since tokens begin at 1.
@@ -104,10 +104,10 @@ export class PartyManagerComponent implements OnInit {
     return maxUnusedNum;
   }
 
-  private onPartyMonstersUpdate(partyMonsters: Monster[]) {
-    this.partyMonsters = partyMonsters;
+  private onPartyEnemiesUpdate(partyEnemies: Monster[]) {
+    this.partyEnemies = partyEnemies;
     const monstersByClassId: Map<string, Monster[]> = new Map();
-    for (const monster of partyMonsters) {
+    for (const monster of partyEnemies) {
       if (monstersByClassId.has(monster.getClassId())) {
         monstersByClassId.get(monster.getClassId()).push(monster);
       } else {

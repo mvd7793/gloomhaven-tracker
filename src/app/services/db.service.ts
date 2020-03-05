@@ -94,7 +94,7 @@ export class DbService {
   getPartyBosses(): Observable<Boss[]> {
     return this.af.collection(PARTY_COLLECTION)
       .doc(DEFAULT_PARTY)
-      .collection<ScenarioMonsterData>(PARTY_MONSTERS_COLLECTION)
+      .collection<ScenarioBossData>(PARTY_MONSTERS_COLLECTION)
       .valueChanges()
       .pipe(flatMap(scenarioMonsters => {
         // Preemptively return an empty list as forkJoin([]) never fires.
