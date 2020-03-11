@@ -42,11 +42,10 @@ export class PartyManagerComponent implements OnInit {
 
   createMonsters() {
     const newMonsters = [];
-    let tokenId = this.getNextTokenId(this.createMonsterData.monsterId);
     for (let i = 0; i < this.createMonsterData.numMonsters; i++) {
       const scenarioData: ScenarioMonsterData = {
         id: '', // Generated in the service
-        tokenId: tokenId++,
+        tokenId: this.getNextTokenId(this.createMonsterData.monsterId),
         monsterId: this.createMonsterData.monsterId,
         level: this.createMonsterData.level,
         type: this.createMonsterData.elite ? MonsterType.ELITE : MonsterType.NORMAL,
